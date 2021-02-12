@@ -35,3 +35,11 @@ docker-compose run --rm --service-ports datasette
 This will start datasette and serve all the newly created files at http://127.0.0.1:8001
 
 See docker-compose.yaml for more information
+
+##### Run SQL queires directly against the databases
+
+JSON format
+- http://127.0.0.1:8001/darien.json?sql=select+*from+subjects+where+subject_id=15684586
+
+HTML format
+- http://127.0.0.1:8001/darien?sql=select+*from+subjects+where+subject_id=15684586
