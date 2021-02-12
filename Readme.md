@@ -4,73 +4,34 @@ Use docker and docker-compose, no other way is supported
 
 ## Getting Started
 
-## Use Datasette to launch the API
+## Building the SQLite db(s)
 
-TODO!
-
-## Building the SQLite db
-
-### Use Datasett to build the db
+### Use custom docker image to build the db
 
 ``` bash
-docker-compose run --rm sqlite
+docker-compose run --rm sqlite-builder
 ```
+
+The following should run and build a sqlite db for each directory containing csv files in the `/data/` directory
 
 ### Or start a bash terminal session if you like
 
 ``` bash
-docker-compose run --rm sqlite /bin/bash
+docker-compose run --rm --service-ports sqlite-builder bash
 # do what you want on the file system
+#
+# run the builder script manually
+labs-import-csv-files-to-sqlite.sh
 # ....
 # and then start sqlite repl to interact with the database.db file
-sqlite3 database.db
+sqlite3 /mnt/databases/folder/database.db
 ```
 
-#### Import CSV file data to a sql lite database
-
-https://sqlite-utils.datasette.io/en/stable/cli.html#inserting-csv-or-tsv-data
-
+#### Run Datasette with the built sql databases from above
 
 ``` bash
-# run this script to ingest all the csv files into the supplied database name
-
-
-# Alternatively run the cmds manually
-#
-# run the sqlite-utils docker image to build the sqlite db
-docker-compose run --rm sqlite-utils
-
-# import the subjects csv file and create the schema :boom:
-sqlite-utils insert darien-labs.db subjects ./darien-map-database-20190131/subjects.csv --csv
-# display the resulting table schema :tada:
-.schema subjects
-
-# repeat for the cameras
-sqlite-utils insert darien-labs.db cameras ./darien-map-database-20190131/cameras.csv --csv
-# display the resulting table schema
-.schema cameras
-
-#
-# repeat for the aggregations
-sqlite-utils insert darien-labs.db aggregations ./darien-map-database-20190131/aggregations.csv --csv
-# display the resulting table schema :tada:
-.schema aggregations
-
-#
-# repeat for the vegetation_map
-sqlite-utils insert darien-labs.db vegetation_map ./darien-map-database-20190131/vegetation_map.csv --csv
-# display the resulting table schema
-.schema vegetation_map
-
-#
-# repeat for the darien_national_park
-sqlite-utils insert darien-labs.db darien_national_park ./darien-map-database-20190131/darien_national_park.csv --csv
-# display the resulting table schema
-.schema darien_national_park
-
-#
-# repeat for the soberania_national_park
-sqlite-utils insert darien-labs.db soberania_national_park ./darien-map-database-20190131/soberania_national_park.csv --csv
-# display the resulting table schema
-.schema soberania_national_park
+docker-compose run --rm --service-ports datasette
 ```
+This will start datasette and serve all the newly created files at http://127.0.0.1:8001
+
+See docker-compose.yaml for more information
