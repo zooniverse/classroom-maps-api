@@ -6,6 +6,15 @@ Use docker and docker-compose, no other way is supported
 
 ## Building the SQLite db(s)
 
+Uncompress the *.zip files in `./data/*.csv` ensuring they remain in their respective diretory names
+
+``` bash
+# TODO improve this
+cd data
+unzip *.zip
+cd -
+```
+
 ### Use custom docker image to build the db
 
 ``` bash
