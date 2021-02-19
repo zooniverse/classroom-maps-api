@@ -24,4 +24,7 @@ done
 # used in publishing the database files via datasette
 # https://docs.datasette.io/en/latest/settings.html?highlight=immutable#configuration-directory-mode
 # https://docs.datasette.io/en/latest/performance.html?highlight=inspect#using-datasette-inspect
-datasette inspect --inspect-file databases/inspect-data.json databases/*
+# ensure we build this file from the dir of the databases for immutables config json
+cd ./databases/
+datasette inspect *.db --inspect-file=inspect-data.json
+cd -
