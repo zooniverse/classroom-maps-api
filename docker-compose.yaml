@@ -8,9 +8,13 @@ services:
       - ./data:/mnt
       - ./labs-import-csv-files-to-sqlite.sh:/usr/local/bin/labs-import-csv-files-to-sqlite.sh
   datasette:
-    image: datasetteproject/datasette:0.54
+    # image: datasetteproject/datasette:0.54
+    build:
+      context: .
+      dockerfile: Dockerfile
     command: ["datasette", "-h", "0.0.0.0", "--cors", "/mnt/databases"]
     ports:
       - "8001:8001"
     volumes:
       - ./data/databases:/mnt/databases
+      - ./plugins:/mnt/databases/plugins
