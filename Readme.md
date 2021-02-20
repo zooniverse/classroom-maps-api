@@ -37,7 +37,7 @@ See docker-compose.yaml for more information
 ## Run SQL queires directly against the databases
 
 GeoJSON format
-- http://127.0.0.1:8001/darien.geojson?sql=select+*from+cameras+limit-10
+- http://127.0.0.1:8001/darien.geojson?sql=select+*from+cameras+limit+10
 
 JSON format
 - http://127.0.0.1:8001/darien.json?sql=select+*from+subjects+where+subject_id=15684586
