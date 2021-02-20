@@ -1,13 +1,5 @@
 version: '3'
 services:
-  # sqlite-builder:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   command: ["/bin/bash"]
-  #   volumes:
-  #     - ./data:/mnt
-  #     - ./labs-import-csv-files-to-sqlite.sh:/usr/local/bin/labs-import-csv-files-to-sqlite.sh
   datasette:
     build:
       context: .
