@@ -45,7 +45,7 @@ JSON format
 HTML format
 - http://127.0.0.1:8001/darien?sql=select+*from+subjects+where+subject_id=15684586
 
-### Interact with the sqlite db or datasette via a bash terminal
+## Manually interact with the sqlite db or datasette via bash
 
 ``` bash
 docker-compose run --rm --service-ports datasette bash
