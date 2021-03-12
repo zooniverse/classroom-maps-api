@@ -14,6 +14,8 @@ Use the following cmd format the zip files correctly
 zip -r $project_name.zip $project_csv_file_dir/
 ```
 
+If you need to modify a source CSV file, e.g. to fix non https URLs, see `rewrite-gorongosa-http-urls.sh` for an example.
+
 ## Building the SQLite db(s)
 
 ### Use custom docker image to build the dbs
