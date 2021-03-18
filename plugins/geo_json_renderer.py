@@ -34,7 +34,7 @@ async def render_geo_json(
             feature_list.append(feature)
         
         # Otherwise, does this have a "the_geom" object, which was used in the old Carto database, which encodes geographical data as a string in the "well-known binary" format?
-        if 'the_geom' in row:
+        elif 'the_geom' in row:
             feature = Geometry(row['the_geom'])
             feature_list.append(feature)
           
