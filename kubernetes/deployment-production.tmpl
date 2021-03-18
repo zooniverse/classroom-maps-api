@@ -1,19 +1,19 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: labs-api-production-tls-secret
+  name: classroom-maps-api-production-tls-secret
 spec:
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  secretName: labs-api-production-tls-secret
+  secretName: classroom-maps-api-production-tls-secret
   dnsNames:
-    - labs-api.zooniverse.org
+    - classroom-maps-api.zooniverse.org
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: labs-api-production-ingress
+  name: classroom-maps-api-production-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
     certmanager.k8s.io/cluster-issuer: letsencrypt-prod
@@ -22,42 +22,42 @@ metadata:
 spec:
   tls:
   - hosts:
-    - labs-api.zooniverse.org
-    secretName: labs-api-production-tls-secret
+    - classroom-maps-api.zooniverse.org
+    secretName: classroom-maps-api-production-tls-secret
   rules:
-  - host: labs-api.zooniverse.org
+  - host: classroom-maps-api.zooniverse.org
     http:
       paths:
       - backend:
-          serviceName: labs-api-production-app
+          serviceName: classroom-maps-api-production-app
           servicePort: 80
         path: /
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: labs-api-production-app
+  name: classroom-maps-api-production-app
   labels:
-    app: labs-api-production-app
+    app: classroom-maps-api-production-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: labs-api-production-app
+      app: classroom-maps-api-production-app
   template:
     metadata:
       labels:
-        app: labs-api-production-app
+        app: classroom-maps-api-production-app
     spec:
       containers:
-        - name: labs-api-production-app
-          image: zooniverse/labs-api:__IMAGE_TAG__
+        - name: classroom-maps-api-production-app
+          image: zooniverse/classroom-maps-api:__IMAGE_TAG__
           resources:
              requests:
-               memory: "150Mi"
+               memory: "500Mi"
                cpu: "10m"
              limits:
-               memory: "150Mi"
+               memory: "500Mi"
                cpu: "1000m"
           ports:
             - containerPort: 80
@@ -65,10 +65,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: labs-api-production-app
+  name: classroom-maps-api-production-app
 spec:
   selector:
-    app: labs-api-production-app
+    app: classroom-maps-api-production-app
   ports:
     - protocol: TCP
       port: 80

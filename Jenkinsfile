@@ -8,11 +8,11 @@ pipeline {
   }
 
   stages {
-    stage('Build Labs API Docker image') {
+    stage('Build Classroom Maps API Docker image') {
       agent any
       steps {
         script {
-          def dockerRepoName = 'zooniverse/labs-api'
+          def dockerRepoName = 'zooniverse/classroom-maps-api'
           def dockerImageName = "${dockerRepoName}:${GIT_COMMIT}"
           def newImage = docker.build(dockerImageName)
           newImage.push()
