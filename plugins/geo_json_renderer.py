@@ -1,6 +1,7 @@
 from datasette import hookimpl
 from datasette.utils.asgi import Response
 import geojson
+from plpygis import Geometry
 
 # https://docs.datasette.io/en/stable/plugin_hooks.html#register-output-renderer-datasette
 
@@ -23,12 +24,23 @@ async def render_geo_json(
     feature_list = list()
 
     for row in result:
-        # https://geojson.org/geojson-spec.html#id2
-        point = geojson.Point((row['longitude'], row['latitude']))
-        # create a geojson feature
-        feature = geojson.Feature(geometry=point, properties=dict(row))
-        # append the current feature to the list of all features
-        feature_list.append(feature)
+        # Is this a blatant Point object?
+        if hasattr(row, 'longitude') and hasattr(row, 'latitude'):
+            # https://geojson.org/geojson-spec.html#id2
+            point = geojson.Point((row['longitude'], row['latitude']))
+            # create a geojson feature
+            feature = geojson.Feature(geometry=point, properties=dict(row))
+            # append the current feature to the list of all features
+            feature_list.append(feature)
+        
+        # Otherwise, does this have a "the_geom" object, which was used in the old Carto database, which encodes geographical data as a string in the "well-known binary" format?
+        elif hasattr(row, 'the_geom'):
+            feature = Geometry(row['the_geom'])
+            feature_list.append(feature)
+          
+        else:
+            # TODO: do we need to have error handling here?
+            pass
 
     feature_collection = geojson.FeatureCollection(feature_list)
     body = geojson.dumps(feature_collection)
