@@ -25,7 +25,7 @@ async def render_geo_json(
 
     for row in result:
         # Is this a blatant Point object?
-        if 'longitude' in row and 'latitude' in row:
+        if 'longitude' in row.keys() and 'latitude' in row.keys():
             # https://geojson.org/geojson-spec.html#id2
             point = geojson.Point((row['longitude'], row['latitude']))
             # create a geojson feature
@@ -34,7 +34,7 @@ async def render_geo_json(
             feature_list.append(feature)
         
         # Otherwise, does this have a "the_geom" object, which was used in the old Carto database, which encodes geographical data as a string in the "well-known binary" format?
-        elif 'the_geom' in row:
+        elif 'the_geom' in row.keys():
             feature = Geometry(row['the_geom'])
             feature_list.append(feature)
           
