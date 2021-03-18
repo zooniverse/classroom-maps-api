@@ -28,4 +28,4 @@ RUN /usr/local/bin/labs-import-csv-files-to-sqlite.sh
 COPY ./plugins/ ./databases/plugins/
 COPY settings.json ./databases/
 
-CMD ["datasette", "-h", "0.0.0.0", "--cors", "/mnt/datasette/databases"]
+CMD ["datasette", "-p", "80",  "-h", "0.0.0.0", "--cors", "/mnt/datasette/databases"]
