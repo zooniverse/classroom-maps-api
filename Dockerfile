@@ -30,4 +30,4 @@ COPY settings.json ./databases/
 
 # CMD ["datasette", "-p", "80", "-h", "0.0.0.0", "--cors", "/mnt/datasette/databases"]
 # fix the dbs not starting in immutable mode, https://github.com/simonw/datasette/pull/1229
-CMD ["datasette", "-p", "80", "-h", "0.0.0.0", "--cors", "-i", "databases/darien.db", "-i", "databases/gorongosa.db", "--plugins-dir=databases/plugins", "--inspect-file=databases/inspect-data.json", "--setting", "sql_time_limit_ms", "60000",  "--setting", "max_returned_rows", "2000", "--setting", "hash_urls", "1"]
+CMD ["datasette", "-p", "80", "-h", "0.0.0.0", "--cors", "-i", "databases/darien.db", "-i", "databases/gorongosa.db", "-i", "databases/kenya.db", "--plugins-dir=databases/plugins", "--inspect-file=databases/inspect-data.json", "--setting", "sql_time_limit_ms", "60000",  "--setting", "max_returned_rows", "2000", "--setting", "hash_urls", "1"]
