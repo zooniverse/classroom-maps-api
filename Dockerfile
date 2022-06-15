@@ -2,6 +2,7 @@ FROM datasetteproject/datasette:0.54
 
 RUN apt-get update && apt-get -y upgrade && \
   apt-get install --no-install-recommends -y \
+  build-essential \
   unzip \
   && \
   apt-get clean
