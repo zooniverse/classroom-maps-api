@@ -1,0 +1,61 @@
+name: Deploy Datasette service
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build_and_push_image:
+    name: Build classroom maps API image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: |
+          ghcr.io/zooniverse/classroom-maps-api:latest
+          ghcr.io/zooniverse/classroom-maps-api:${{ github.sha }}
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build_and_push_image
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_AKS }}
+
+    - name: Set the target AKS cluster
+      uses: Azure/aks-set-context@v3
+      with:
+        cluster-name: microservices
+        resource-group: kubernetes
+
+    - name: Modify & apply template
+      run: |
+        kubectl apply -f kubernetes/deployment-production.yaml
+        kubectl rollout restart deployment classroom-maps-api-production-app
+  slack_notification:
+    name: Slack notification
+    uses: zooniverse/ci-cd/.github/workflows/slack_notification.yaml@main
+    needs: [build_and_push_image, deploy]
+    if: always()
+    with:
+      commit_id: ${{ github.sha }}
+      job_name: Build classroom-maps-api image
+      status: ${{ needs.build_and_push_image.result }}
+      title: "Classroom maps API deploy complete"
+      title_link: "https://classroom-maps-api.zooniverse.org"
+    secrets:
+      slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
