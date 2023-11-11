@@ -14,8 +14,8 @@ do
     table_name="$(basename $input_csv_file .csv)"
     echo ---
     echo "Importing $input_csv_file to table: $table_name in db: $db_name_path"
-    # run the import csv cmd using csvs-to-sqlite
-    csvs-to-sqlite --replace-tables $input_csv_file $db_name_path
+    # run the import csv cmd using sqlite-utils
+    sqlite-utils insert $db_name_path $table_name $input_csv_file --csv --replace --detect-types
     echo
   done
 done
