@@ -8,14 +8,9 @@ RUN apt-get clean
 WORKDIR /mnt/datasette
 
 # Datasette tools
-# for csv import - https://datasette.io/tools/csvs-to-sqlite
 # for datasette db maniupluations and tools - https://datasette.io/tools/sqlite-utils
 # for geojson api responses - https://pypi.org/project/geojson/
-RUN pip install csvs-to-sqlite sqlite-utils geojson plpygis
-
-# pandas 2.0 breaks csvs-to-sqlite.
-# https://github.com/simonw/csvs-to-sqlite/pull/92
-RUN pip install --force-reinstall "pandas~=1.0"
+RUN pip install sqlite-utils geojson plpygis
 
 # Add the csv data files
 COPY data/ .
